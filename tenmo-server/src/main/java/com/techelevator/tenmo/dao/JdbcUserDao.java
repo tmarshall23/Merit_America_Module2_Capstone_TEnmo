@@ -2,6 +2,7 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.User;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,6 +46,29 @@ public class JdbcUserDao implements UserDao {
         return users;
     }
 
+
+
+
+
+
+
+    @Override
+    public List<String> findAllUsername(String username) {
+        List<String> users = new ArrayList<>();
+        String sql = "SELECT username FROM tenmo_user WHERE username != ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+        while(results.next()) {
+            users.add(results.getString("username"));
+        }
+        return users;
+    }
+
+
+
+
+
+
+
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user WHERE username ILIKE ?;";
@@ -54,6 +78,9 @@ public class JdbcUserDao implements UserDao {
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
+
+
+
 
     @Override
     public boolean create(String username, String password) {
