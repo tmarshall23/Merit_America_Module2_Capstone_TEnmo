@@ -94,7 +94,7 @@ public class App {
 	private void viewCurrentBalance() {
         AccountService account = new AccountService(currentUser);
         System.out.print("Your current account balance is: ");
-        System.out.println(account.findBalance(currentUser.getUser().getUsername()));
+        System.out.println(account.findBalance(currentUser.getUser().getId()));
 		
 	}
 
@@ -116,30 +116,29 @@ public class App {
 
         List<String> firstList = userService.getUsers();
 
-        userService.removeUser(currentUser.getUser().getUsername(), firstList);
+        userService.printUsers(userService.userIdAndName(currentUser));
+
+        int receivingAccount = consoleService.promptForInt("Please select a User ID to transfer to: ");
 
         BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter an amount to send: ");
 
-        userService.printUsers(firstList);
-
-        String receivingAccount = consoleService.promptForString("Please select a user to transfer to: ");
 
 
-        Long receivingAccountId = account.getTransferToId(receivingAccount);
 
-        account.transfer(currentUser.getUser().getUsername(), receivingAccount, transferAmount);
+//        Long receivingAccountId = account.getTransferToId(receivingAccount);
+//        account.transfer(currentUser.getUser().getUsername(), receivingAccount, transferAmount);
 
-        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
+//        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
 
-        System.out.println(receivingAccountId + "--" + receivingAccount);
-
-        System.out.println("Making Sending Transfer");
-
-        System.out.print("Is Transfer Valid: ");
-
-        System.out.println(account.isTransferValid(transferAmount, currentUser.getUser().getUsername()));
-
-        System.out.print("Your sent amount: " + transferAmount);
+//        System.out.println(receivingAccountId + "--" + receivingAccount);
+//
+//        System.out.println("Making Sending Transfer");
+//
+//        System.out.print("Is Transfer Valid: ");
+//
+//        System.out.println(account.isTransferValid(transferAmount, currentUser.getUser().getUsername()));
+//
+//        System.out.print("Your sent amount: " + transferAmount);
 
 	}
 

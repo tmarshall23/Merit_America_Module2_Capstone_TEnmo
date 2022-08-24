@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,11 @@ public class UserController {
     }
 
 
+    @GetMapping("/{username}")
+    public Integer getId(@Valid @PathVariable String username){
+        return dao.findIdByUsername(username);
 
+    }
 
 
 }

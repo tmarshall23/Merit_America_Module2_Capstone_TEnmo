@@ -2,6 +2,7 @@ package com.techelevator.tenmo.controller;
 
 
 import com.techelevator.tenmo.dao.AccountDao;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.LoginDTO;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,6 @@ import java.math.BigDecimal;
 public class AccountController {
 
     private AccountDao dao;
-
     public AccountController(AccountDao dao) {
         this.dao = dao;
     }
@@ -35,8 +35,22 @@ public class AccountController {
 
     }
 
+    @GetMapping("/id/{userId}")
+    public BigDecimal findBalanceById(@Valid @PathVariable int userId) {
+            return dao.findAccountById(userId);
+    }
 
 
+    @PutMapping("/id/withdraw/{accountId}")
+    public void withdrawBalance(@Valid @PathVariable Long accountId, BigDecimal withdrawAmount){
+         dao.withdrawBalanceById(accountId, withdrawAmount);
 
+    }
+
+    @PutMapping("/id/deposit")
+    public void depositBalance(@Valid @PathVariable Long accountId, BigDecimal depositAmount){
+        dao.withdrawBalanceById(accountId, depositAmount);
+
+    }
 
 }

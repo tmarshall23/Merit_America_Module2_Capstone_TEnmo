@@ -1,6 +1,6 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.model.LoginDTO;
+import com.techelevator.tenmo.model.Account;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -26,10 +26,32 @@ public class JdbcAccountDao implements AccountDao {
 
     }
 
+    @Override
+    public BigDecimal findAccountById(int id){
+
+        String sql = "SELECT balance FROM account WHERE user_id = ? ";
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class, id);
+
+    }
+
+    @Override
+    public void withdrawBalanceById(Long accountId, BigDecimal withdrawAmount){
+    Account account = new Account();
+    account.setAccount_id(accountId);
+    BigDecimal updatedBalance = account.getBalance().subtract(withdrawAmount);
+    String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
+    jdbcTemplate.update(sql, BigDecimal.class, updatedBalance, account.getAccount_id());
 
 
+    }
 
-
-
+    @Override
+    public void depositBalanceById(Long accountId, BigDecimal depositAmount){
+        Account account = new Account();
+        account.setAccount_id(accountId);
+        account.setBalance(depositAmount);
+        String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
+        jdbcTemplate.queryForObject(sql, BigDecimal.class, account.getBalance(), account.getAccount_id());
+    }
 
 }

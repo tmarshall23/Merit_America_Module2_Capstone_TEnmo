@@ -11,10 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
-
-
-
-
+import java.util.Map;
 
 
 public class UserService {
@@ -50,16 +47,28 @@ public class UserService {
 
 //take in list of users, get id, set id to key, get username, set username to value
 // make accountService inside method to call username inside to gather id in order to set to key value
-    public HashMap<Long, String> userIdName(){
-        
 
 
 
 
+    public HashMap<Long, String> userIdAndName(AuthenticatedUser authUser){
 
 
+        AccountService accountService = new AccountService(authUser);
 
 
+        HashMap<Long, String> outputMap = new HashMap<>();
+
+
+        List<String> usernames = getUsers();
+        removeUser(authUser.getUser().getUsername(), usernames);
+
+        for (String username : usernames) {
+            Long userId = accountService.getTransferToId(username);
+            outputMap.put(userId, username);
+        }
+
+        return outputMap;
     }
 
 
@@ -73,10 +82,10 @@ public class UserService {
         }
     }
 
-  public void printUsers(List<String> usernames){
+  public void printUsers(HashMap<Long, String> usernames){
 
-      for (String username : usernames) {
-          System.out.println(username);
+      for (HashMap.Entry<Long, String> username : usernames.entrySet()) {
+          System.out.println(username.getKey() + " ---- " + username.getValue());
       }
 
   }
