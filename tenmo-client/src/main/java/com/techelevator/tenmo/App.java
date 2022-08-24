@@ -8,7 +8,6 @@ import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.UserService;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 public class App {
@@ -19,8 +18,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
-    AccountService account = new AccountService(currentUser);
-    UserService userService = new UserService(currentUser);
+
 
 
     public static void main(String[] args) {
@@ -94,6 +92,7 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
+        AccountService account = new AccountService(currentUser);
         System.out.print("Your current account balance is: ");
         System.out.println(account.findBalance(currentUser.getUser().getUsername()));
 		
@@ -111,26 +110,43 @@ public class App {
 
 	private void sendBucks() {
 
+
+        UserService userService = new UserService(currentUser);
+        AccountService account = new AccountService(currentUser);
+
         List<String> firstList = userService.getUsers();
 
-        firstList.removeIf(user -> user.equals(currentUser.getUser().getUsername()));
+        userService.removeUser(currentUser.getUser().getUsername(), firstList);
+
+        BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter an amount to send: ");
+
+        userService.printUsers(firstList);
+
+        String receivingAccount = consoleService.promptForString("Please select a user to transfer to: ");
 
 
-    BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter an amount to send: ");
-    String receivingAccount = consoleService.promptForString("Please select a user to transfer to: " + firstList);
-    Long receivingAccountId = account.getTransferToId(receivingAccount);
-    account.transfer(currentUser.getUser().getUsername(), receivingAccount, transferAmount);
+        Long receivingAccountId = account.getTransferToId(receivingAccount);
+
+        account.transfer(currentUser.getUser().getUsername(), receivingAccount, transferAmount);
 
         System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
+
         System.out.println(receivingAccountId + "--" + receivingAccount);
+
         System.out.println("Making Sending Transfer");
+
         System.out.print("Is Transfer Valid: ");
+
         System.out.println(account.isTransferValid(transferAmount, currentUser.getUser().getUsername()));
+
         System.out.print("Your sent amount: " + transferAmount);
 
 	}
 
+
+
 	private void requestBucks() {
+
 		// TODO Auto-generated method stub
 		
 	}

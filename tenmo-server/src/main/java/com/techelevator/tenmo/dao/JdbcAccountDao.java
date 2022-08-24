@@ -22,9 +22,7 @@ public class JdbcAccountDao implements AccountDao {
         String sql = "SELECT balance FROM account JOIN tenmo_user ON " +
                 "account.user_id = tenmo_user.user_id" +
                 " WHERE username ILIKE ? ";
-        BigDecimal bigDecimal = jdbcTemplate.queryForObject(sql, BigDecimal.class, username);
-
-        return bigDecimal;
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class, username);
 
     }
 

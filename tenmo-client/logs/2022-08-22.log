@@ -1,0 +1,7 @@
+2022-08-22T14:31:48.9990345 400 : [{"timestamp":"2022-08-22T21:31:48.982+00:00","status":400,"error":"Bad Request","message":"Required String parameter 'username' is not present","path":"/users"}]
+2022-08-22T14:32:31.9322855 400 : [{"timestamp":"2022-08-22T21:32:31.919+00:00","status":400,"error":"Bad Request","message":"Required String parameter 'username' is not present","path":"/users"}]
+2022-08-22T14:32:32.6250197 400 : [{"timestamp":"2022-08-22T21:32:32.623+00:00","status":400,"error":"Bad Request","message":"Required String parameter 'username' is not present","path":"/users"}]
+2022-08-22T14:47:08.8424904 401 : [no body]
+2022-08-22T14:54:16.828271 400 : [{"timestamp":"2022-08-22T21:54:16.816+00:00","status":400,"error":"Bad Request","message":"Required String parameter 'username' is not present","path":"/users"}]
+2022-08-22T14:54:52.1446082 400 : [{"timestamp":"2022-08-22T21:54:52.131+00:00","status":400,"error":"Bad Request","message":"Required String parameter 'username' is not present","path":"/users"}]
+2022-08-22T20:15:02.6739673 404 : [{"timestamp":"2022-08-23T03:15:02.657+00:00","status":404,"error":"Not Found","message":"No message available","path":"/account/"}]

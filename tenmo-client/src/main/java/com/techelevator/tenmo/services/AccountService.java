@@ -27,6 +27,10 @@ public class AccountService {
         this.authUser = authUser;
     }
 
+
+
+
+
     public BigDecimal findBalance(String username){
         BigDecimal output = null;
         try {
@@ -39,6 +43,11 @@ public class AccountService {
         }
         return output;
     }
+
+
+
+
+
 
     public String isTransferValid(BigDecimal transferAmount,String username){
         Boolean valid = false;
@@ -57,6 +66,10 @@ public class AccountService {
 
 
 
+
+
+
+
     public Long getTransferToId(String username){
 
         Long output = null;
@@ -72,6 +85,11 @@ public class AccountService {
 
         return output;
     }
+
+
+
+
+
 
     public void transfer(String username1, String username2, BigDecimal transferAmount){
         withdraw(username1, transferAmount);

@@ -18,8 +18,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<String> getUsers(@RequestParam String username){
-        return dao.findAllUsername(username);
+    public List<String> getUsers(){
+        return dao.findAllUsername();
 
     }
 

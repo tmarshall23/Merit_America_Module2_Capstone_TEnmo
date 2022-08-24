@@ -9,7 +9,7 @@ public interface UserDao {
 
     List<User> findAll();
 
-    List<String> findAllUsername(String username);
+    List<String> findAllUsername();
 
 
     User findByUsername(String username);
