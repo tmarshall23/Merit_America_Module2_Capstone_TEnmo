@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 public interface AccountDao {
 
 
-    BigDecimal findAccountByUsername(String username);
+    BigDecimal findAccountBalanceByUsername(String username);
 
-    BigDecimal findAccountById(int id);
+    BigDecimal findAccountBalanceByUserId(int id);
 
-    void withdrawBalanceById(Long accountId, BigDecimal withdrawAmount);
+    void withdrawBalanceById(int accountId, BigDecimal withdrawAmount);
 
     void depositBalanceById(Long accountId, BigDecimal depositAmount);
 }

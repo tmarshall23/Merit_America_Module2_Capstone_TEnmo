@@ -26,30 +26,30 @@ public class AccountController {
     @GetMapping("/{username}/balance")
     public BigDecimal findBalance(@Valid @PathVariable String username) throws UsernameNotFoundException {
         try {
-            return dao.findAccountByUsername(username);
+            return dao.findAccountBalanceByUsername(username);
         }catch (UsernameNotFoundException e){
             System.out.println(e.getMessage());
 
         }
-    return null;
+        return null;
 
     }
 
     @GetMapping("/id/{userId}")
     public BigDecimal findBalanceById(@Valid @PathVariable int userId) {
-            return dao.findAccountById(userId);
+        return dao.findAccountBalanceByUserId(userId);
     }
 
 
-    @PutMapping("/id/withdraw/{accountId}")
-    public void withdrawBalance(@Valid @PathVariable Long accountId, BigDecimal withdrawAmount){
-         dao.withdrawBalanceById(accountId, withdrawAmount);
+    @PutMapping("/withdraw/{accountId}")
+    public void withdrawBalance(@Valid @PathVariable int accountId, BigDecimal withdrawAmount){
+        dao.withdrawBalanceById(accountId, withdrawAmount);
 
     }
 
-    @PutMapping("/id/deposit")
-    public void depositBalance(@Valid @PathVariable Long accountId, BigDecimal depositAmount){
-        dao.withdrawBalanceById(accountId, depositAmount);
+    @PutMapping("/deposit/{userID}")
+    public void depositBalance(@Valid @PathVariable Long userId, BigDecimal depositAmount){
+        dao.depositBalanceById(userId, depositAmount);
 
     }
 

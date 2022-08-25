@@ -101,20 +101,20 @@ public class AccountService {
 
     public void withdraw(Long userId, BigDecimal withdrawAmount){
 
-        BigDecimal balance = findBalance(userId);
-        balance = balance.subtract(withdrawAmount);
+//        BigDecimal balance = findBalance(userId);
+//        balance = balance.subtract(withdrawAmount);
 
-        restTemplate.put(API_BASE_URL + "/account/" + "id/" + "/withdraw", balance);
+        restTemplate.put(API_BASE_URL + "/account/" + "/withdraw/" + userId, withdrawAmount);
 
 
     }
 
     public void deposit(Long userId, BigDecimal depositAmount){
 
-        BigDecimal balance = findBalance(userId);
-        balance = balance.add(depositAmount);
+//        BigDecimal balance = findBalance(userId);
+//        balance = balance.add(depositAmount);
 
-        restTemplate.put(API_BASE_URL + "/account/" + "id/" + "/deposit", balance);
+        restTemplate.put(API_BASE_URL + "/account/" + "/deposit", depositAmount);
 
     }
 
