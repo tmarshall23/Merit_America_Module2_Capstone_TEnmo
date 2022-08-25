@@ -11,7 +11,7 @@ public class Account {
 
     public Account(){}
 
-    public Account(Long user_id){}
+    public Account(Long ser_id){}
 
     public Account(Long user_id, Long account_id, BigDecimal balance) {
         this.user_id = user_id;
