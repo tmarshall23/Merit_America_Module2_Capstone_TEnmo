@@ -16,5 +16,5 @@ public interface AccountDao {
 
     void depositBalanceById(Long accountId, BigDecimal depositAmount);
 
-    Account getAccountById(Account account, Long accountId);
+    Account getAccountById(Long accountId);
 }

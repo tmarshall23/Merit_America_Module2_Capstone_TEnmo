@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.util.BasicLogger;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class AccountService {
 
-    private static final String API_BASE_URL = "http://localhost:8080/";
+    private static final String API_BASE_URL = "http://localhost:8080/account/";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -30,14 +31,11 @@ public class AccountService {
     }
 
 
-
-
-
     public BigDecimal findBalance(Long userId){
         BigDecimal output = null;
         try {
             ResponseEntity<BigDecimal> response =
-                    restTemplate.getForEntity(API_BASE_URL + "/account/" + "id/" + userId, BigDecimal.class,
+                    restTemplate.getForEntity(API_BASE_URL + "id/" + userId, BigDecimal.class,
                             makeAuthEntity());
             output = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -45,10 +43,6 @@ public class AccountService {
         }
         return output;
     }
-
-
-
-
 
 
     public String isTransferValid(BigDecimal transferAmount,Long userId){
@@ -68,53 +62,21 @@ public class AccountService {
 
 
 
-
-
-
-
-    public Long getTransferToId(String username){
-
-       Long output = null;
-        try {
-            ResponseEntity<Long> response =
-                    restTemplate.getForEntity(API_BASE_URL + "/users/" + username , Long.class,
-                            makeAuthEntity());
-            output = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-
-
-        return output;
-    }
-
-
-
-
-
-
     public void transfer(Long withdrawID, Long depositID, BigDecimal transferAmount){
-        withdraw(withdrawID, transferAmount);
-        deposit(depositID, transferAmount);
+//        withdraw(withdrawID, transferAmount);
+//        deposit(depositID, transferAmount);
     }
 
 
-    public void withdraw(Long userId, BigDecimal withdrawAmount){
+    public void update(Account account, int accountId){
 
-//        BigDecimal balance = findBalance(userId);
-//        balance = balance.subtract(withdrawAmount);
-
-        restTemplate.put(API_BASE_URL + "/account/" + "/withdraw/" + userId, withdrawAmount);
-
+        restTemplate.put(API_BASE_URL + "withdraw/" + accountId, account);
 
     }
 
-    public void deposit(Long userId, BigDecimal depositAmount){
+    public Account getAccount(Long userId){
 
-//        BigDecimal balance = findBalance(userId);
-//        balance = balance.add(depositAmount);
-
-        restTemplate.put(API_BASE_URL + "/account/" + "/deposit", depositAmount);
+    return restTemplate.getForObject(API_BASE_URL + userId, Account.class);
 
     }
 

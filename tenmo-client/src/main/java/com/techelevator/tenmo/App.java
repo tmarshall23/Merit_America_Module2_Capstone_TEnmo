@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
@@ -114,18 +115,26 @@ public class App {
         UserService userService = new UserService(currentUser);
         AccountService account = new AccountService(currentUser);
 
+        Account userAccount = account.getAccount(currentUser.getUser().getId());
+
         List<String> firstList = userService.getUsers();
 
         userService.printUsers(userService.userIdAndName(currentUser));
 
-        int receivingAccount = consoleService.promptForInt("Please select a User ID to transfer to: ");
+        int receivingAccountId = consoleService.promptForInt("Please select a User ID to transfer to: ");
+
+        Account receivingAccount = account.getAccount((long) receivingAccountId);
+
 
         BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter an amount to send: ");
 
+        userAccount.setBalance(userAccount.getBalance().subtract(transferAmount));
+        receivingAccount.setBalance(receivingAccount.getBalance().add(transferAmount));
+        account.update(userAccount, (int)userAccount.getAccount_id());
+        account.update(receivingAccount,(int) receivingAccount.getAccount_id());
 
 
-
-//        Long receivingAccountId = account.getTransferToId(receivingAccount);
+//        Long receivingAccountId = userService.getTransferToId(receivingAccount);
 //        account.transfer(currentUser.getUser().getUsername(), receivingAccount, transferAmount);
 
 //        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());

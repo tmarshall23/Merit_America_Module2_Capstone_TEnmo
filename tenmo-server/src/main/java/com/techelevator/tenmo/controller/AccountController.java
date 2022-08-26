@@ -51,9 +51,9 @@ public class AccountController {
         dao.depositBalanceById(userId, depositAmount);
 
     }
-    @GetMapping("/{accountId}")
-    public Account getAccount(@RequestBody Account account, @PathVariable Long accountId){
-        return dao.getAccountById(account, accountId);
+    @GetMapping("/{userId}")
+    public Account getAccount(@PathVariable Long userId){
+        return dao.getAccountById(userId);
     }
 
 }
