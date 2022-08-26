@@ -12,7 +12,9 @@ public interface AccountDao {
 
     BigDecimal findAccountBalanceByUserId(int id);
 
-    void withdrawBalanceById(int accountId, BigDecimal withdrawAmount);
+    int update(Account account, Long accountId);
 
     void depositBalanceById(Long accountId, BigDecimal depositAmount);
+
+    Account getAccountById(Account account, Long accountId);
 }

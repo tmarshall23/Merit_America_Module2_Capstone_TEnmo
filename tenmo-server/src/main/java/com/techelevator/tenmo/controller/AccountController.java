@@ -41,16 +41,19 @@ public class AccountController {
     }
 
 
-    @PutMapping("/withdraw/{accountId}")
-    public void withdrawBalance(@Valid @PathVariable int accountId, BigDecimal withdrawAmount){
-        dao.withdrawBalanceById(accountId, withdrawAmount);
-
+    @PutMapping({"/withdraw/{accountId}"})
+    public int update(@RequestBody Account account, @PathVariable Long accountId) {
+        return this.dao.update(account, accountId);
     }
 
-    @PutMapping("/deposit/{userID}")
+    @PutMapping("/deposit/{userId}")
     public void depositBalance(@Valid @PathVariable Long userId, BigDecimal depositAmount){
         dao.depositBalanceById(userId, depositAmount);
 
+    }
+    @GetMapping("/{accountId}")
+    public Account getAccount(@RequestBody Account account, @PathVariable Long accountId){
+        return dao.getAccountById(account, accountId);
     }
 
 }
