@@ -111,13 +111,10 @@ public class App {
 
 	private void sendBucks() {
 
-
         UserService userService = new UserService(currentUser);
         AccountService account = new AccountService(currentUser);
 
         Account userAccount = account.getAccount(currentUser.getUser().getId());
-
-        List<String> firstList = userService.getUsers();
 
         userService.printUsers(userService.userIdAndName(currentUser));
 
@@ -130,12 +127,13 @@ public class App {
 
         userAccount.setBalance(userAccount.getBalance().subtract(transferAmount));
         receivingAccount.setBalance(receivingAccount.getBalance().add(transferAmount));
+
+
         account.update(userAccount, (int)userAccount.getAccount_id());
         account.update(receivingAccount,(int) receivingAccount.getAccount_id());
 
 
-//        Long receivingAccountId = userService.getTransferToId(receivingAccount);
-//        account.transfer(currentUser.getUser().getUsername(), receivingAccount, transferAmount);
+//
 
 //        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
 

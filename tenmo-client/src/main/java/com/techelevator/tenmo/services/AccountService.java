@@ -61,16 +61,9 @@ public class AccountService {
     }
 
 
-
-    public void transfer(Long withdrawID, Long depositID, BigDecimal transferAmount){
-//        withdraw(withdrawID, transferAmount);
-//        deposit(depositID, transferAmount);
-    }
-
-
     public void update(Account account, int accountId){
 
-        restTemplate.put(API_BASE_URL + "withdraw/" + accountId, account);
+        restTemplate.put(API_BASE_URL + "transfer/" + accountId, account);
 
     }
 
