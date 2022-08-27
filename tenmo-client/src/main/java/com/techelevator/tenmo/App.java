@@ -2,11 +2,9 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.services.AccountService;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
-import com.techelevator.tenmo.services.UserService;
+import com.techelevator.tenmo.services.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -110,30 +108,58 @@ public class App {
 	}
 
 	private void sendBucks() {
-
+        // sets transfer to send, int, for transfer id
         UserService userService = new UserService(currentUser);
-        AccountService account = new AccountService(currentUser);
+        AccountService accountService = new AccountService(currentUser);
+        TransferService transferService = new TransferService(currentUser);
 
-        Account userAccount = account.getAccount(currentUser.getUser().getId());
+
+        Account userAccount = accountService.getAccount(currentUser.getUser().getId());
 
         userService.printUsers(userService.userIdAndName(currentUser));
 
         int receivingAccountId = consoleService.promptForInt("Please select a User ID to transfer to: ");
 
-        Account receivingAccount = account.getAccount((long) receivingAccountId);
+        Account receivingAccount = accountService.getAccount((long) receivingAccountId);
 
+        //make sure that accountService is not user and is part of map
 
         BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter an amount to send: ");
+
+        //make sure value is not negative or zero,
+        //
+
+
+
 
         userAccount.setBalance(userAccount.getBalance().subtract(transferAmount));
         receivingAccount.setBalance(receivingAccount.getBalance().add(transferAmount));
 
 
-        account.update(userAccount, (int)userAccount.getAccount_id());
-        account.update(receivingAccount,(int) receivingAccount.getAccount_id());
+
+        Transfer transfer = new Transfer(2,2,userAccount.getAccount_id(),receivingAccount.getAccount_id(),transferAmount);
+        transferService.sendTransferInfo(transfer);
 
 
-//
+
+        accountService.update(userAccount, (int)userAccount.getAccount_id());
+        accountService.update(receivingAccount,(int) receivingAccount.getAccount_id());
+
+
+        //need to validate that ID given is from the list.
+        //need to validate that funds are available for transfer, also not ZERO or negative
+
+        //send has initial status of approved
+        //need to send the transfer details to the transfer table, transfer status and transfer type are already populated
+        //gives transfer id need type int, status int, accountService from id, accountService to id and amount inserted into transfer table.
+
+        //step 5 and 6 depend on finishing transfer table,
+        //select * from transfer where accountFrom_id = ?, select * from transfer where transfer_id = ? respectively
+
+        //handle exceptions and errors
+        //comment code
+
+        //2 methods for transfer status?? one for approved, one for denied?
 
 //        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
 
@@ -143,7 +169,7 @@ public class App {
 //
 //        System.out.print("Is Transfer Valid: ");
 //
-//        System.out.println(account.isTransferValid(transferAmount, currentUser.getUser().getUsername()));
+//        System.out.println(accountService.isTransferValid(transferAmount, currentUser.getUser().getUsername()));
 //
 //        System.out.print("Your sent amount: " + transferAmount);
 

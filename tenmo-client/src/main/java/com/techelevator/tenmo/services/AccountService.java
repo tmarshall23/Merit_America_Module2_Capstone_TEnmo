@@ -45,22 +45,6 @@ public class AccountService {
     }
 
 
-    public String isTransferValid(BigDecimal transferAmount,Long userId){
-        Boolean valid = false;
-        if(findBalance(userId).compareTo(transferAmount) < 0){
-            valid = false;
-        }
-        else if (findBalance(userId).compareTo(transferAmount) > 0){
-            valid = true;
-        }
-        if(valid.equals(true)){
-            return "Approved";
-        }else{
-            return "Transaction Denied";
-        }
-    }
-
-
     public void update(Account account, int accountId){
 
         restTemplate.put(API_BASE_URL + "transfer/" + accountId, account);
