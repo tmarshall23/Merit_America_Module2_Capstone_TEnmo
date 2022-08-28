@@ -12,9 +12,19 @@ public interface TransferDao {
 
     List<Transfer> getAllTransfers();
 
-    List<Long> getTransferId(Long transferId);
+    Transfer getTransferForId(Long transferId);
+
+    String getTransferStatusName(Integer statusId);
+
+    String getTransferTypeName(Integer typeId);
+
+    List<Long> getTransferIdFrom(Long accountId);
+
+    List<Long> getTransferIdTo(Long accountId);
 
     String getTransferToUsername(Long accountId);
+
+    String getTransferFromUsername(Long transferId);
 
     BigDecimal getAmountForTransfer(Long transferId);
 }

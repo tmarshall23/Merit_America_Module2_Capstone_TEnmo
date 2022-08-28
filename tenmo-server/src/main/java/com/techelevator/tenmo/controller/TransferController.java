@@ -31,15 +31,41 @@ public class TransferController {
         return transferDao.getAllTransfers();
     }
 
-    @GetMapping("/{accountId}")
-    public List<Long> getAllTransferIds(@PathVariable Long accountId){
-        return transferDao.getTransferId(accountId);
+    @GetMapping("{transferId}")
+    public Transfer getTransferById(@PathVariable Long transferId){
+        return transferDao.getTransferForId(transferId);
     }
 
-    @GetMapping("/id/{transferId}")
+    @GetMapping("{statusId}/status")
+    public String getStatusDescById(@PathVariable Integer statusId){
+        return transferDao.getTransferStatusName(statusId);
+    }
+
+    @GetMapping("{typeId}/type")
+    public String getTypeDescById(@PathVariable Integer typeId){
+        return transferDao.getTransferTypeName(typeId);
+    }
+
+    @GetMapping("/from/{accountId}")
+    public List<Long> getAllTransferIdsFrom(@PathVariable Long accountId){
+
+        return transferDao.getTransferIdFrom(accountId);
+    }
+    @GetMapping("/to/{accountId}")
+    public List<Long> getAllTransferIdsTo(@PathVariable Long accountId){
+
+        return transferDao.getTransferIdTo(accountId);
+    }
+
+    @GetMapping("/{transferId}/to")
     public String getTransferToUsername(@Valid @PathVariable Long transferId){
         return transferDao.getTransferToUsername(transferId);
     }
+    @GetMapping("/{transferId}/from")
+    public String getTransferFromUsername(@Valid @PathVariable Long transferId){
+        return transferDao.getTransferFromUsername(transferId);
+    }
+
 
     @GetMapping("/amount/{transferId}")
     public BigDecimal getAmountForTransfer(@PathVariable Long transferId){

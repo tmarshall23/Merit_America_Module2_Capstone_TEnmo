@@ -83,6 +83,16 @@ public class ConsoleService {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
     }
+    public void sendTEBucksMenu() {
+        System.out.println("---------------------------------------------");
+        System.out.println("Users                                        ");
+        System.out.println("ID        Name                               ");
+        System.out.println("---------------------------------------------");
+    }
+    public void sendTEBucksMenuEnd() {
+        System.out.println("----------                                   ");
+        System.out.println("                                             ");
+    }
 
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");

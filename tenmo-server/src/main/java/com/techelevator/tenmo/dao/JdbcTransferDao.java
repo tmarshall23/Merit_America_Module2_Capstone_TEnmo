@@ -44,8 +44,33 @@ public class JdbcTransferDao implements TransferDao{
     return transfers;
     }
 
+    @Override
+    public Transfer getTransferForId(Long transferId){
+        Transfer transfer = new Transfer();
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer WHERE transfer_id = ?";
+        SqlRowSet result =jdbcTemplate.queryForRowSet(sql, transferId);
+        while (result.next()){
+            transfer = mapRowToTransfer(result);
+        }
+        return transfer;
+    }
+
+    @Override
+    public String getTransferStatusName(Integer statusId){
+
+        String sql = "SELECT transfer_status_desc FROM transfer_status WHERE transfer_status_id = ?;";
+        return jdbcTemplate.queryForObject(sql, String.class, statusId);
+    }
+
+    @Override
+    public String getTransferTypeName(Integer typeId){
+
+        String sql = "SELECT transfer_type_desc FROM transfer_type WHERE transfer_type_id = ?;";
+        return jdbcTemplate.queryForObject(sql, String.class, typeId);
+    }
+
         @Override
-        public List<Long> getTransferId(Long accountId){
+        public List<Long> getTransferIdFrom(Long accountId){
         List<Long> ids = new ArrayList<>();
         String sql = "SELECT transfer_id FROM transfer WHERE account_from = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
@@ -56,12 +81,33 @@ public class JdbcTransferDao implements TransferDao{
         }
 
     @Override
+    public List<Long> getTransferIdTo(Long accountId){
+        List<Long> ids = new ArrayList<>();
+        String sql = "SELECT transfer_id FROM transfer WHERE account_to = ?";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
+        while(result.next()){
+            ids.add(result.getLong("transfer_id"));
+        }
+        return ids;
+    }
+
+
+    @Override
     public String getTransferToUsername(Long transferId){
 
         String sql = "SELECT tenmo_user.username FROM transfer JOIN account ON transfer.account_to = account.account_id " +
                 "JOIN tenmo_user ON tenmo_user.user_id = account.user_id " +
                 "WHERE transfer.transfer_id = ?";
        return jdbcTemplate.queryForObject(sql, String.class, transferId);
+    }
+
+    @Override
+    public String getTransferFromUsername(Long transferId){
+
+        String sql = "SELECT tenmo_user.username FROM transfer JOIN account ON transfer.account_from = account.account_id " +
+                "JOIN tenmo_user ON tenmo_user.user_id = account.user_id " +
+                "WHERE transfer.transfer_id = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, transferId);
     }
 
     @Override

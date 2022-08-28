@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class TransferService {
 
-    private static final String API_BASE_URL = "http://localhost:8080/transfer";
+    private static final String API_BASE_URL = "http://localhost:8080/transfer/";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -38,27 +38,81 @@ public class TransferService {
 
     }
 
-    public HashMap<Long, Transfer> getTransfers(){
+    public List<Integer> getTransferIdsTo(Long accountId){
+       return restTemplate.getForObject(API_BASE_URL + "from/" + accountId , List.class);
 
-       HashMap<Long, Transfer> transfers;
-
-            transfers = restTemplate.getForObject(API_BASE_URL + "/all", HashMap.class);
-
-        return transfers;
+    }
+    public List<Integer> getTransferIdsFrom(Long accountId){
+        return restTemplate.getForObject(API_BASE_URL  + "to/" + accountId, List.class);
 
     }
 
-    //take serverside params and print them in corresponding order//
-
-    public void printTransfersList(HashMap<Long, Transfer> transfers){
-
-        for (HashMap.Entry<Long, Transfer> transfer : transfers.entrySet()){
-            System.out.println(transfer.getKey() + " " + transfer.getValue());
-
-        }
-
-
+    public String getUsernameForTransferTo(Integer transferId){
+        return  restTemplate.getForObject(API_BASE_URL + transferId + "/to", String.class);
     }
+
+    public String getUsernameForTransferFrom(Integer transferId){
+        return  restTemplate.getForObject(API_BASE_URL + transferId + "/from", String.class);
+    }
+
+    public BigDecimal getAmountForTransfer(Integer transferId){
+        return  restTemplate.getForObject(API_BASE_URL + "amount/" + transferId, BigDecimal.class);
+    }
+
+    public Transfer getTransferForId(Long transferId){
+        return restTemplate.getForObject(API_BASE_URL + transferId, Transfer.class);
+    }
+
+    public String getTransferStatusDesc(Integer statusId){
+        return restTemplate.getForObject(API_BASE_URL + statusId + "/status", String.class);
+    }
+
+    public String getTransferTypeDesc(Integer typeId){
+        return restTemplate.getForObject(API_BASE_URL + typeId + "/type", String.class);
+    }
+
+
+//    HashMap<Long, String> outputMap = new HashMap<>();
+//
+//
+//    List<String> usernames = getUsers();
+//    removeUser(authUser.getUser().getUsername(), usernames);
+//
+//        for (String username : usernames) {
+//        Long userId = getTransferToId(username);
+//        outputMap.put(userId, username);
+//    }
+//
+//        return outputMap;
+//}
+
+//    public HashMap<Long, Transfer> getTransfers(Long accountId){
+//
+//        HashMap<Long, Transfer> transfers = new HashMap<>();
+//
+//        List<Long> transferIds = getTransferIdsFrom(accountId);
+//        transfers = restTemplate.getForObject(API_BASE_URL + "all", HashMap.class);
+//
+//        return transfers;
+//
+//    }
+
+
+//    public void printTransfersList(HashMap<Long, Transfer> transfers){
+//
+//        for (HashMap.Entry<Long, Transfer> transfer : transfers.entrySet()){
+//            System.out.println(transfer.getKey() + " " + transfer.getValue());
+//
+//        }
+//    }
+
+
+
+
+
+
+
+
 
 
 

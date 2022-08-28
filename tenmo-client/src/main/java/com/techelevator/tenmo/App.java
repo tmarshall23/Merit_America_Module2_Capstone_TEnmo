@@ -1,10 +1,8 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
+import io.cucumber.java.en_old.Ac;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -100,13 +98,33 @@ public class App {
 
 	private void viewTransferHistory() {
         TransferService transferService = new TransferService(currentUser);
+        AccountService accountService = new AccountService(currentUser);
+        Account userAccount = accountService.getAccount(currentUser.getUser().getId());
 
-        transferService.printTransfersList(transferService.getTransfers());
+       List<Integer> toList = transferService.getTransferIdsFrom(userAccount.getAccount_id());
+        List<Integer> fromList = transferService.getTransferIdsTo(userAccount.getAccount_id());
+       String usernameTo  = transferService.getUsernameForTransferTo(3043);
+       String usernameFrom = transferService.getUsernameForTransferFrom(3043);
+       BigDecimal amount = transferService.getAmountForTransfer(3043);
 
-        //get transfer ids in server side and client
-        //get transfer type in both as well
-        // map transfer id as key to the type as value
-        // print the map
+        for (Integer id:fromList) {
+            System.out.println(id + " To: " + transferService.getUsernameForTransferTo(id) + " " + transferService.getAmountForTransfer(id));
+        }
+        for (Integer id:toList) {
+            System.out.println(id + " From: " + transferService.getUsernameForTransferFrom(id) + " " + transferService.getAmountForTransfer(id));
+        }
+       int transferInfo = consoleService.promptForInt("Please select a transaction ID for more information OR 0 to exit to Main Menu: ");
+        if (transferInfo == 0){
+            mainMenu();
+        }
+        Transfer transferOutput = transferService.getTransferForId((long)transferInfo);
+
+        System.out.println("Transfer Id ---- " + transferOutput.getTransfer_id());
+        System.out.println("Transfer Status ---- " + transferService.getTransferTypeDesc(transferOutput.getTransfer_type_id()));
+        System.out.println("Transfer Type ---- " + transferService.getTransferStatusDesc(transferOutput.getTransfer_status_id()));
+        System.out.println("Account From ---- " + transferOutput.getAccount_from());
+        System.out.println("Account To ---- " + transferOutput.getAccount_to());
+        System.out.println("Amount ---- " + "$" +transferOutput.getAmount());
 		
 	}
 
@@ -120,54 +138,67 @@ public class App {
         UserService userService = new UserService(currentUser);
         AccountService accountService = new AccountService(currentUser);
         TransferService transferService = new TransferService(currentUser);
-
+        int approved = 2;
+        int denied = 3;
+        int send = 2;
 
         Account userAccount = accountService.getAccount(currentUser.getUser().getId());
-
+        consoleService.sendTEBucksMenu();
         userService.printUsers(userService.userIdAndName(currentUser));
-
-        int receivingAccountId = consoleService.promptForInt("Please select a User ID to transfer to: ");
-
+        consoleService.sendTEBucksMenuEnd();
+        int receivingAccountId = consoleService.promptForInt("Please select a User ID to transfer to Or 0 to exit to Main Menu: ");
+        if(receivingAccountId == userAccount.getAccount_id() || !userService.userIdAndName(currentUser).containsKey((long)(receivingAccountId))){
+            System.out.println("You can't send money to yourself, or to people who don't exist");
+            mainMenu();
+        }
+        if (receivingAccountId == 0){
+            mainMenu();
+        }
         Account receivingAccount = accountService.getAccount((long) receivingAccountId);
 
-        //make sure that accountService is not user and is part of map
+
 
         BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter an amount to send: ");
 
-        //make sure value is not negative or zero,
-        //
-        Transfer transfer = new Transfer(2,2,userAccount.getAccount_id(),receivingAccount.getAccount_id(),transferAmount);
-        transferService.sendTransferInfo(transfer);
+        Transfer transfer = new Transfer(send, approved, userAccount.getAccount_id(), receivingAccount.getAccount_id(), transferAmount);
 
-
-
+        if(transferAmount.equals(BigDecimal.valueOf(0))){
+            System.out.println(" ");
+            System.out.println("Cannot send a zero amount");
+            mainMenu();
+        }
+       else if(transferAmount.compareTo(BigDecimal.ZERO) < 0){
+            System.out.println(" ");
+            System.out.println("Cannot send negative amount");
+            mainMenu();
+        }
+       else if(transferAmount.compareTo(userAccount.getBalance()) == 1){
+            System.out.println(" ");
+            System.out.println("Insufficient funds");
+            transfer.setTransfer_status_id(denied);
+            transferService.sendTransferInfo(transfer);
+            mainMenu();
+        }
+       else {
+            transferService.sendTransferInfo(transfer);
+        }
         userAccount.setBalance(userAccount.getBalance().subtract(transferAmount));
         receivingAccount.setBalance(receivingAccount.getBalance().add(transferAmount));
-
-
-
-
-
-
 
         accountService.update(userAccount, (int)userAccount.getAccount_id());
         accountService.update(receivingAccount,(int) receivingAccount.getAccount_id());
 
 
-        //need to validate that ID given is from the list.
-        //need to validate that funds are available for transfer, also not ZERO or negative
 
-        //send has initial status of approved
-        //need to send the transfer details to the transfer table, transfer status and transfer type are already populated
-        //gives transfer id need type int, status int, accountService from id, accountService to id and amount inserted into transfer table.
 
-        //step 5 and 6 depend on finishing transfer table,
-        //select * from transfer where accountFrom_id = ?, select * from transfer where transfer_id = ? respectively
+
+
+
+
 
         //handle exceptions and errors
         //comment code
 
-        //2 methods for transfer status?? one for approved, one for denied?
 
 //        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
 

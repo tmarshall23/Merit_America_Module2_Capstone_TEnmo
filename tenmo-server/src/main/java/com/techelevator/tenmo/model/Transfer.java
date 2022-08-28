@@ -15,7 +15,8 @@ public class Transfer {
     public Transfer() {
     }
 
-    public Transfer( int transfer_type_id, int transfer_status_id, Long account_from, Long account_to, BigDecimal amount) {
+    public Transfer( Long transfer_id, int transfer_type_id, int transfer_status_id, Long account_from, Long account_to, BigDecimal amount) {
+        this.transfer_id = transfer_id;
         this.transfer_type_id = transfer_type_id;
         this.transfer_status_id = transfer_status_id;
         this.account_from = account_from;
