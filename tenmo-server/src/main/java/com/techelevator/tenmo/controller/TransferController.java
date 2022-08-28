@@ -3,10 +3,11 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.model.Transfer;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.List;
 
 
 @RestController
@@ -20,19 +21,30 @@ public class TransferController {
     }
 
     @PostMapping("")
-    public int postTransfer(Transfer transfer){
-      int transferId;
-       transferId = transferDao.postTransfer(transfer);
-        return transferId;
+    public Transfer postTransfer(@RequestBody Transfer transfer){
+       return transferDao.postTransfer(transfer);
+
     }
 
+    @GetMapping("/all")
+    public List<Transfer> getAllTransfers(){
+        return transferDao.getAllTransfers();
+    }
 
+    @GetMapping("/{accountId}")
+    public List<Long> getAllTransferIds(@PathVariable Long accountId){
+        return transferDao.getTransferId(accountId);
+    }
 
+    @GetMapping("/id/{transferId}")
+    public String getTransferToUsername(@Valid @PathVariable Long transferId){
+        return transferDao.getTransferToUsername(transferId);
+    }
 
-
-
-
-
+    @GetMapping("/amount/{transferId}")
+    public BigDecimal getAmountForTransfer(@PathVariable Long transferId){
+        return transferDao.getAmountForTransfer(transferId);
+    }
 
 
 

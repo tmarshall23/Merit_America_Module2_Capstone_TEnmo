@@ -32,6 +32,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -98,7 +99,14 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+        TransferService transferService = new TransferService(currentUser);
+
+        transferService.printTransfersList(transferService.getTransfers());
+
+        //get transfer ids in server side and client
+        //get transfer type in both as well
+        // map transfer id as key to the type as value
+        // print the map
 		
 	}
 
@@ -128,7 +136,8 @@ public class App {
 
         //make sure value is not negative or zero,
         //
-
+        Transfer transfer = new Transfer(2,2,userAccount.getAccount_id(),receivingAccount.getAccount_id(),transferAmount);
+        transferService.sendTransferInfo(transfer);
 
 
 
@@ -137,8 +146,7 @@ public class App {
 
 
 
-        Transfer transfer = new Transfer(2,2,userAccount.getAccount_id(),receivingAccount.getAccount_id(),transferAmount);
-        transferService.sendTransferInfo(transfer);
+
 
 
 
