@@ -71,51 +71,6 @@ public class TransferService {
         return restTemplate.getForObject(API_BASE_URL + typeId + "/type", String.class);
     }
 
-
-//    HashMap<Long, String> outputMap = new HashMap<>();
-//
-//
-//    List<String> usernames = getUsers();
-//    removeUser(authUser.getUser().getUsername(), usernames);
-//
-//        for (String username : usernames) {
-//        Long userId = getTransferToId(username);
-//        outputMap.put(userId, username);
-//    }
-//
-//        return outputMap;
-//}
-
-//    public HashMap<Long, Transfer> getTransfers(Long accountId){
-//
-//        HashMap<Long, Transfer> transfers = new HashMap<>();
-//
-//        List<Long> transferIds = getTransferIdsFrom(accountId);
-//        transfers = restTemplate.getForObject(API_BASE_URL + "all", HashMap.class);
-//
-//        return transfers;
-//
-//    }
-
-
-//    public void printTransfersList(HashMap<Long, Transfer> transfers){
-//
-//        for (HashMap.Entry<Long, Transfer> transfer : transfers.entrySet()){
-//            System.out.println(transfer.getKey() + " " + transfer.getValue());
-//
-//        }
-//    }
-
-
-
-
-
-
-
-
-
-
-
     private HttpEntity<Transfer> makeEntity(Transfer transfer){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -123,15 +78,4 @@ public class TransferService {
         return new HttpEntity<>(transfer, headers);
     }
 
-
-
-
-
-
-
-    private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authUser.getToken());
-        return new HttpEntity<>(headers);
-    }
 }

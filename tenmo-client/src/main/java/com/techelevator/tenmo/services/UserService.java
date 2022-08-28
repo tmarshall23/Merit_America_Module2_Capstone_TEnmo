@@ -44,8 +44,6 @@ public class UserService {
         return users;
     }
 
-
-
     public HashMap<Long, String> userIdAndName(AuthenticatedUser authUser){
 
         HashMap<Long, String> outputMap = new HashMap<>();
@@ -78,8 +76,6 @@ public class UserService {
         return output;
     }
 
-
-
     public void removeUser(String username, List<String> usernames){
         for (int i = 0; i < usernames.size(); i++) {
             if(usernames.get(i).equals(username)){
@@ -88,16 +84,13 @@ public class UserService {
         }
     }
 
-  public void printUsers(HashMap<Long, String> usernames){
+    public void printUsers(HashMap<Long, String> usernames){
 
-      for (HashMap.Entry<Long, String> username : usernames.entrySet()) {
+        for (HashMap.Entry<Long, String> username : usernames.entrySet()) {
           System.out.println(username.getKey() + " ---- " + username.getValue());
       }
 
   }
-
-
-
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();

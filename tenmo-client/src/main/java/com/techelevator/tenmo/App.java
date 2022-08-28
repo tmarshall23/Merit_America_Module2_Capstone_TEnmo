@@ -103,22 +103,21 @@ public class App {
 
        List<Integer> toList = transferService.getTransferIdsFrom(userAccount.getAccount_id());
         List<Integer> fromList = transferService.getTransferIdsTo(userAccount.getAccount_id());
-       String usernameTo  = transferService.getUsernameForTransferTo(3043);
-       String usernameFrom = transferService.getUsernameForTransferFrom(3043);
-       BigDecimal amount = transferService.getAmountForTransfer(3043);
 
         for (Integer id:fromList) {
-            System.out.println(id + " To: " + transferService.getUsernameForTransferTo(id) + " " + transferService.getAmountForTransfer(id));
+            System.out.println(id + " To: " + transferService.getUsernameForTransferTo(id) + " $" + transferService.getAmountForTransfer(id));
         }
         for (Integer id:toList) {
-            System.out.println(id + " From: " + transferService.getUsernameForTransferFrom(id) + " " + transferService.getAmountForTransfer(id));
+            System.out.println(id + " From: " + transferService.getUsernameForTransferFrom(id) + " $" + transferService.getAmountForTransfer(id));
         }
+        System.out.println(" ");
        int transferInfo = consoleService.promptForInt("Please select a transaction ID for more information OR 0 to exit to Main Menu: ");
         if (transferInfo == 0){
             mainMenu();
         }
         Transfer transferOutput = transferService.getTransferForId((long)transferInfo);
 
+        System.out.println(" ");
         System.out.println("Transfer Id ---- " + transferOutput.getTransfer_id());
         System.out.println("Transfer Status ---- " + transferService.getTransferTypeDesc(transferOutput.getTransfer_type_id()));
         System.out.println("Transfer Type ---- " + transferService.getTransferStatusDesc(transferOutput.getTransfer_status_id()));
@@ -188,29 +187,15 @@ public class App {
         accountService.update(userAccount, (int)userAccount.getAccount_id());
         accountService.update(receivingAccount,(int) receivingAccount.getAccount_id());
 
-
-
-
-
-
-
+        System.out.println(" ");
+        System.out.println("Transfer Complete: " + transferService.getTransferStatusDesc(transfer.getTransfer_status_id()));
+        System.out.println(" ");
+        System.out.println("Amount sent to " + receivingAccount.getAccount_id() + ": $"
+                            + transferAmount);
 
 
         //handle exceptions and errors
         //comment code
-
-
-//        System.out.println(currentUser.getUser().getId() + "--" + currentUser.getUser().getUsername());
-
-//        System.out.println(receivingAccountId + "--" + receivingAccount);
-//
-//        System.out.println("Making Sending Transfer");
-//
-//        System.out.print("Is Transfer Valid: ");
-//
-//        System.out.println(accountService.isTransferValid(transferAmount, currentUser.getUser().getUsername()));
-//
-//        System.out.print("Your sent amount: " + transferAmount);
 
 	}
 

@@ -45,18 +45,6 @@ public class JdbcUserDao implements UserDao {
         return users;
     }
 
-
-
-//    @Override
-//    public Long findId(String username) {
-//        String sql = "SELECT user_id FROM tenmo_user WHERE username ILIKE ?;";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
-//
-//        return results.getLong("user_id");
-//    }
-
-
-
     @Override
     public List<String> findAllUsername() {
         List<String> users = new ArrayList<>();
@@ -68,12 +56,6 @@ public class JdbcUserDao implements UserDao {
         return users;
     }
 
-
-
-
-
-
-
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user WHERE username ILIKE ?;";
@@ -83,9 +65,6 @@ public class JdbcUserDao implements UserDao {
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
-
-
-
 
     @Override
     public boolean create(String username, String password) {
