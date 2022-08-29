@@ -30,7 +30,7 @@ public class AccountService {
         this.authUser = authUser;
     }
 
-
+    //retrieves Account balance by the users ID
     public BigDecimal findBalance(Long userId){
         BigDecimal output = null;
         try {
@@ -44,21 +44,29 @@ public class AccountService {
         return output;
     }
 
-
-    public void update(Account account, int accountId){
-
-        restTemplate.put(API_BASE_URL + "transfer/" + accountId, account);
-
+    //Updates the account balance via account Id
+    public void update(Account account, int accountId) {
+        try {
+            restTemplate.put(API_BASE_URL + "transfer/" + accountId, account);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
     }
-
+    //Retrieves account information to use inside Client
     public Account getAccount(Long userId){
-
-    return restTemplate.getForObject(API_BASE_URL + userId, Account.class);
-
+        Account account = new Account();
+        try {
+            ResponseEntity<Account> response =
+            restTemplate.getForEntity(API_BASE_URL + userId, Account.class);
+            account = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return account;
     }
 
 
-
+    //Creates entity with authorized user
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authUser.getToken());
@@ -66,9 +74,3 @@ public class AccountService {
     }
 
 }
-
-
-
-
-
-

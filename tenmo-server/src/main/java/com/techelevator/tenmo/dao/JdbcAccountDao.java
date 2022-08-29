@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 
 @Component
@@ -43,15 +44,19 @@ public class JdbcAccountDao implements AccountDao {
 
 
     @Override
-    public Account getAccountById(Long userId){
-        Account account = null;
+    public Account getAccountById(Long userId) throws AccountNotFoundException {
+        Account account = new Account();
         String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        while(results.next()) {
-            account = mapRowToAccount(results);
-        }
+        if (results.wasNull()){
+            throw new AccountNotFoundException("Unable to retrieve account.");
+            }
+        while (results.next()) {
+                account = mapRowToAccount(results);
+            }
         return account;
+
     }
 
     private Account mapRowToAccount(SqlRowSet rs) {

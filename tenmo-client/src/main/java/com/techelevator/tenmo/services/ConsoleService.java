@@ -10,6 +10,12 @@ public class ConsoleService {
 
     private final Scanner scanner = new Scanner(System.in);
 
+    public void closeScanner(){
+        scanner.close();
+    }
+
+
+
     public int promptForMenuSelection(String prompt) {
         int menuSelection;
         System.out.print(prompt);
@@ -83,12 +89,14 @@ public class ConsoleService {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
     }
+    //Creates menu for the Id's and Names to chose from
     public void sendTEBucksMenu() {
         System.out.println("---------------------------------------------");
         System.out.println("Users                                        ");
         System.out.println("ID        Name                               ");
         System.out.println("---------------------------------------------");
     }
+    //Ends Menu above
     public void sendTEBucksMenuEnd() {
         System.out.println("----------                                   ");
         System.out.println("                                             ");

@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ public interface TransferDao {
 
     List<Transfer> getAllTransfers();
 
-    Transfer getTransferForId(Long transferId);
+    Transfer getTransferForId(Long transferId) throws TransferNotFoundException;
 
     String getTransferStatusName(Integer statusId);
 

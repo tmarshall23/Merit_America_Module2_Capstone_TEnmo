@@ -22,13 +22,11 @@ public class TransferService {
 
     private AuthenticatedUser authUser;
 
-    public TransferService() {
-    }
+    public TransferService() {}
 
     public TransferService(AuthenticatedUser authUser) {
         this.authUser = authUser;
     }
-
 
     public void sendTransferInfo(Transfer transfer){
 
@@ -37,38 +35,86 @@ public class TransferService {
         restTemplate.exchange(API_BASE_URL, HttpMethod.POST, entity, Transfer.class);
 
     }
-
-    public List<Integer> getTransferIdsTo(Long accountId){
-       return restTemplate.getForObject(API_BASE_URL + "from/" + accountId , List.class);
-
+    //Provides a list of Transfer ids for the receiving accounts
+    public List<Integer> getTransferIdsTo(Long accountId) {
+        List<Integer> output = null;
+        try {
+            output = restTemplate.getForObject(API_BASE_URL + "from/" + accountId, List.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
+    //Provides a list of Transfer ids for the sending accounts
     public List<Integer> getTransferIdsFrom(Long accountId){
-        return restTemplate.getForObject(API_BASE_URL  + "to/" + accountId, List.class);
-
+        List<Integer> output = null;
+        try {
+        output = restTemplate.getForObject(API_BASE_URL  + "to/" + accountId, List.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
-
+    //Receives the username for transfer Ids provided for receiving account
     public String getUsernameForTransferTo(Integer transferId){
-        return  restTemplate.getForObject(API_BASE_URL + transferId + "/to", String.class);
+        String output = "";
+        try {
+        output = restTemplate.getForObject(API_BASE_URL + transferId + "/to", String.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
-
+    //Receives the username for transfer Ids provided for sending account
     public String getUsernameForTransferFrom(Integer transferId){
-        return  restTemplate.getForObject(API_BASE_URL + transferId + "/from", String.class);
+        String output = "";
+        try {
+        output =  restTemplate.getForObject(API_BASE_URL + transferId + "/from", String.class);
+    } catch (RestClientResponseException | ResourceAccessException e) {
+        BasicLogger.log(e.getMessage());
     }
-
+        return output;
+    }
+    //Receives amount for specific transfer for the Id
     public BigDecimal getAmountForTransfer(Integer transferId){
-        return  restTemplate.getForObject(API_BASE_URL + "amount/" + transferId, BigDecimal.class);
+        BigDecimal output = null;
+        try {
+        output = restTemplate.getForObject(API_BASE_URL + "amount/" + transferId, BigDecimal.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
 
+    //Returns all info for the transfer to display for specific id
     public Transfer getTransferForId(Long transferId){
-        return restTemplate.getForObject(API_BASE_URL + transferId, Transfer.class);
+        Transfer output = null;
+        try {
+        output = restTemplate.getForObject(API_BASE_URL + transferId, Transfer.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
-
+    //Returns the Status Description of a transfer_status
     public String getTransferStatusDesc(Integer statusId){
-        return restTemplate.getForObject(API_BASE_URL + statusId + "/status", String.class);
+        String output = "";
+        try {
+        output = restTemplate.getForObject(API_BASE_URL + statusId + "/status", String.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
-
+    //Returns the Type Description of a transfer_type
     public String getTransferTypeDesc(Integer typeId){
-        return restTemplate.getForObject(API_BASE_URL + typeId + "/type", String.class);
+        String output = "";
+        try {
+        output = restTemplate.getForObject(API_BASE_URL + typeId + "/type", String.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return output;
     }
 
     private HttpEntity<Transfer> makeEntity(Transfer transfer){

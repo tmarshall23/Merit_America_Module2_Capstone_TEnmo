@@ -7,6 +7,7 @@ import com.techelevator.tenmo.model.LoginDTO;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.math.BigDecimal;
@@ -42,12 +43,12 @@ public class AccountController {
 
 
     @PutMapping({"/transfer/{accountId}"})
-    public int update(@RequestBody Account account, @PathVariable Long accountId) {
+    public int update(@RequestBody Account account, @Valid @PathVariable Long accountId) {
         return this.dao.update(account, accountId);
     }
 
     @GetMapping("/{userId}")
-    public Account getAccount(@PathVariable Long userId){
+    public Account getAccount(@Valid @PathVariable Long userId) throws AccountNotFoundException {
         return dao.getAccountById(userId);
     }
 

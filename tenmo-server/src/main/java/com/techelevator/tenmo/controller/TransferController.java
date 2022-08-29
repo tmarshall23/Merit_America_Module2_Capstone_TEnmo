@@ -2,7 +2,9 @@ package com.techelevator.tenmo.controller;
 
 
 import com.techelevator.tenmo.dao.TransferDao;
+import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ public class TransferController {
         this.transferDao = transferDao;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public Transfer postTransfer(@RequestBody Transfer transfer){
        return transferDao.postTransfer(transfer);
@@ -32,27 +35,27 @@ public class TransferController {
     }
 
     @GetMapping("{transferId}")
-    public Transfer getTransferById(@PathVariable Long transferId){
+    public Transfer getTransferById(@Valid @PathVariable Long transferId) throws TransferNotFoundException {
         return transferDao.getTransferForId(transferId);
     }
 
     @GetMapping("{statusId}/status")
-    public String getStatusDescById(@PathVariable Integer statusId){
+    public String getStatusDescById(@Valid @PathVariable Integer statusId){
         return transferDao.getTransferStatusName(statusId);
     }
 
     @GetMapping("{typeId}/type")
-    public String getTypeDescById(@PathVariable Integer typeId){
+    public String getTypeDescById(@Valid @PathVariable Integer typeId){
         return transferDao.getTransferTypeName(typeId);
     }
 
     @GetMapping("/from/{accountId}")
-    public List<Long> getAllTransferIdsFrom(@PathVariable Long accountId){
+    public List<Long> getAllTransferIdsFrom(@Valid @PathVariable Long accountId){
 
         return transferDao.getTransferIdFrom(accountId);
     }
     @GetMapping("/to/{accountId}")
-    public List<Long> getAllTransferIdsTo(@PathVariable Long accountId){
+    public List<Long> getAllTransferIdsTo(@Valid @PathVariable Long accountId){
 
         return transferDao.getTransferIdTo(accountId);
     }
@@ -68,7 +71,7 @@ public class TransferController {
 
 
     @GetMapping("/amount/{transferId}")
-    public BigDecimal getAmountForTransfer(@PathVariable Long transferId){
+    public BigDecimal getAmountForTransfer(@Valid @PathVariable Long transferId){
         return transferDao.getAmountForTransfer(transferId);
     }
 
