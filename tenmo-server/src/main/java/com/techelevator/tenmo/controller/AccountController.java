@@ -23,24 +23,20 @@ public class AccountController {
         this.dao = dao;
     }
 
-
     @GetMapping("/{username}/balance")
     public BigDecimal findBalance(@Valid @PathVariable String username) throws UsernameNotFoundException {
         try {
             return dao.findAccountBalanceByUsername(username);
         }catch (UsernameNotFoundException e){
             System.out.println(e.getMessage());
-
         }
         return null;
-
     }
 
     @GetMapping("/id/{userId}")
     public BigDecimal findBalanceById(@Valid @PathVariable int userId) {
         return dao.findAccountBalanceByUserId(userId);
     }
-
 
     @PutMapping({"/transfer/{accountId}"})
     public int update(@RequestBody Account account, @Valid @PathVariable Long accountId) {

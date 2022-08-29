@@ -102,6 +102,23 @@ public class ConsoleService {
         System.out.println("                                             ");
     }
 
+    public void viewTransfersMenu() {
+        System.out.println("---------------------------------------------");
+        System.out.println("Transfer                                     ");
+        System.out.println("ID      From/To                              ");
+        System.out.println("---------------------------------------------");
+
+    }
+    public void viewTransfersMenuEnd() {
+        System.out.println("---------------------------------------------");
+        System.out.println("                                             ");
+    }
+    public void transferDetailsMenu() {
+        System.out.println("---------------------------------------------");
+        System.out.println("Transfer Details                             ");
+        System.out.println("---------------------------------------------");
+    }
+
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }

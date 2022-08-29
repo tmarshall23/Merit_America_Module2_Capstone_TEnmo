@@ -109,14 +109,15 @@ public class App {
        //Creates a List of Transfer Ids for the transfers received from other accounts to the current user
         List<Integer> fromList = transferService.getTransferIdsTo(userAccount.getAccount_id());
             //Prints the list of accounts From
+        consoleService.viewTransfersMenu();
             for (Integer id:fromList) {
-                System.out.println(id + " To: " + transferService.getUsernameForTransferTo(id) + " $" + transferService.getAmountForTransfer(id));
+                System.out.println(id + "    To: " + transferService.getUsernameForTransferTo(id) + " $" + transferService.getAmountForTransfer(id));
             }
             //Prints the list of accounts To
             for (Integer id:toList) {
-                System.out.println(id + " From: " + transferService.getUsernameForTransferFrom(id) + " $" + transferService.getAmountForTransfer(id));
+                System.out.println(id + "    From: " + transferService.getUsernameForTransferFrom(id) + " $" + transferService.getAmountForTransfer(id));
             }
-                System.out.println(" ");
+            consoleService.viewTransfersMenuEnd();
         //Asks user for the Transfer Id of a valid Transfer to display Transfer info
         int transferInfo = consoleService.promptForInt("Please select a transaction ID for more information OR 0 to exit to Main Menu: ");
 
@@ -132,6 +133,7 @@ public class App {
                 //Creates Transfer based off of Server information
                 Transfer transferOutput = transferService.getTransferForId((long) transferInfo);
                 //Prints all info from Transfer
+                consoleService.transferDetailsMenu();
                 System.out.println(" ");
                 System.out.println("Transfer Id ---- " + transferOutput.getTransfer_id());
                 System.out.println("Transfer Status ---- " + transferService.getTransferTypeDesc(transferOutput.getTransfer_type_id()));

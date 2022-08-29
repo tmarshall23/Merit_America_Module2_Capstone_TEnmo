@@ -26,7 +26,6 @@ public class TransferController {
     @PostMapping("")
     public Transfer postTransfer(@RequestBody Transfer transfer){
        return transferDao.postTransfer(transfer);
-
     }
 
     @GetMapping("/all")
@@ -69,13 +68,9 @@ public class TransferController {
         return transferDao.getTransferFromUsername(transferId);
     }
 
-
     @GetMapping("/amount/{transferId}")
     public BigDecimal getAmountForTransfer(@Valid @PathVariable Long transferId){
         return transferDao.getAmountForTransfer(transferId);
     }
-
-
-
 
 }

@@ -35,13 +35,11 @@ public class JdbcAccountDao implements AccountDao {
 
     }
 
-
     @Override
     public int update(Account account, Long accountId) {
         String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
         return this.jdbcTemplate.update(sql, account.getBalance(), accountId);
     }
-
 
     @Override
     public Account getAccountById(Long userId) throws AccountNotFoundException {
@@ -56,7 +54,6 @@ public class JdbcAccountDao implements AccountDao {
                 account = mapRowToAccount(results);
             }
         return account;
-
     }
 
     private Account mapRowToAccount(SqlRowSet rs) {

@@ -86,7 +86,6 @@ public class JdbcUserDao implements UserDao {
         } catch (DataAccessException e) {
             return false;
         }
-
         return true;
     }
 

@@ -11,7 +11,6 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-
     JdbcUserDao dao;
 
     public UserController(JdbcUserDao dao) {
@@ -21,15 +20,11 @@ public class UserController {
     @GetMapping("")
     public List<String> getUsers(){
         return dao.findAllUsername();
-
     }
-
 
     @GetMapping("/{username}")
     public Integer getId(@Valid @PathVariable String username){
         return dao.findIdByUsername(username);
-
     }
-
 
 }
