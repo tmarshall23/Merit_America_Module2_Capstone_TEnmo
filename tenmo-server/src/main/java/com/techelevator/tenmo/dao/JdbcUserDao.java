@@ -22,6 +22,7 @@ public class JdbcUserDao implements UserDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //Receives a users Id via the username
     @Override
     public int findIdByUsername(String username) {
         String sql = "SELECT user_id FROM tenmo_user WHERE username ILIKE ?;";
@@ -44,7 +45,7 @@ public class JdbcUserDao implements UserDao {
         }
         return users;
     }
-
+    //Receives a List of usernames of all users
     @Override
     public List<String> findAllUsername() {
         List<String> users = new ArrayList<>();

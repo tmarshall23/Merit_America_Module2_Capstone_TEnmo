@@ -16,7 +16,7 @@ public class JdbcAccountDao implements AccountDao {
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    //joins account to tenmo_user to get the balance by username
     @Override
     public BigDecimal findAccountBalanceByUsername(String username) {
 
@@ -26,7 +26,7 @@ public class JdbcAccountDao implements AccountDao {
         return jdbcTemplate.queryForObject(sql, BigDecimal.class, username);
 
     }
-
+    //Receives the balance from an account by user Id
     @Override
     public BigDecimal findAccountBalanceByUserId(int id) {
 
@@ -34,13 +34,14 @@ public class JdbcAccountDao implements AccountDao {
         return jdbcTemplate.queryForObject(sql, BigDecimal.class, id);
 
     }
-
+    //Updates accounts balance to new balance
+    //used for withdraw and deposit
     @Override
     public int update(Account account, Long accountId) {
         String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
         return this.jdbcTemplate.update(sql, account.getBalance(), accountId);
     }
-
+    //Receives entire account entity via user Id
     @Override
     public Account getAccountById(Long userId) throws AccountNotFoundException {
         Account account = new Account();
@@ -55,7 +56,7 @@ public class JdbcAccountDao implements AccountDao {
             }
         return account;
     }
-
+    // maps contents to account object
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
         account.setAccount_id(rs.getLong("account_id"));

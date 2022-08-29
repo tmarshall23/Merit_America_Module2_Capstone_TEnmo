@@ -22,7 +22,7 @@ public class AccountController {
     public AccountController(AccountDao dao) {
         this.dao = dao;
     }
-
+    //Receives the balance of an Account via the Username
     @GetMapping("/{username}/balance")
     public BigDecimal findBalance(@Valid @PathVariable String username) throws UsernameNotFoundException {
         try {
@@ -32,17 +32,18 @@ public class AccountController {
         }
         return null;
     }
-
+    //Receives the balance of an Account via the userId
     @GetMapping("/id/{userId}")
     public BigDecimal findBalanceById(@Valid @PathVariable int userId) {
         return dao.findAccountBalanceByUserId(userId);
     }
-
+    //updates the method of the account with the given info
+    //used for withdraw and deposit
     @PutMapping({"/transfer/{accountId}"})
     public int update(@RequestBody Account account, @Valid @PathVariable Long accountId) {
         return this.dao.update(account, accountId);
     }
-
+    //Receives the entire account entity via account Id
     @GetMapping("/{userId}")
     public Account getAccount(@Valid @PathVariable Long userId) throws AccountNotFoundException {
         return dao.getAccountById(userId);

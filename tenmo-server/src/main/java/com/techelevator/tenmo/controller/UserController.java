@@ -17,11 +17,12 @@ public class UserController {
         this.dao = dao;
     }
 
+    //Receives a List of usernames of all users
     @GetMapping("")
     public List<String> getUsers(){
         return dao.findAllUsername();
     }
-
+    //Receives a users Id via the username
     @GetMapping("/{username}")
     public Integer getId(@Valid @PathVariable String username){
         return dao.findIdByUsername(username);
